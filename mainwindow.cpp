@@ -3,14 +3,24 @@
 
 #include <QMessageBox>
 #include <QPushButton>
+#include <QVBoxLayout>
+#include <QMetaObject>
 #include <QDebug>
 
+#include "itemlabel.h"
+#include "reflect.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    Reflect::registerClass<ItemRectLabel>();
+    Reflect::registerClass<ItemEllipseLabel>();
+
+    tabWidgetInit();
+    itemDockWidgetInit();
 
     connect(ui->actionNew, &QAction::triggered, this, &MainWindow::slotActNew);
     connect(ui->actionOpen, &QAction::triggered, this, &MainWindow::slotActOpen);
@@ -53,6 +63,35 @@ void MainWindow::tabWidgetInit()
     });
 }
 
+void MainWindow::itemDockWidgetInit()
+{
+    QVBoxLayout *vlayout = new QVBoxLayout(ui->dockWidgetContents);
+    ui->dockWidgetContents->setLayout(vlayout);
+
+/* 反射 */
+    QString rectStr = "ItemRectLabel";
+    ItemLabel *rectItem = (ItemLabel*)Reflect::newInstance(rectStr.toUtf8());
+    vlayout->addWidget(rectItem);
+
+    ItemLabel *ellipseItem = new ItemEllipseLabel(ui->dockWidgetContents);
+    vlayout->addWidget(ellipseItem);
+}
+
+QMap<QString, QString> MainWindow::getItemsList(const QString &filepath)
+{
+    QFile file(filepath);
+    file.open(QIODevice::ReadOnly);
+    QTextStream stream(&file);
+
+    QMap<QString, QString> map;
+    while (!stream.atEnd()) {
+        QString item, pixmap;
+        stream >> item;
+        stream >> pixmap;
+        map.insert(item, pixmap);
+    }
+    return map;
+}
 
 void MainWindow::slotActNew()
 {
@@ -65,11 +104,11 @@ void MainWindow::slotActNew()
     MView *view = new MView(pScene);
     ui->tabWidget->addTab(view, text);
     ui->tabWidget->setCurrentWidget(view);
-//    curView = view;
 }
 
 void MainWindow::slotActOpen()
 {
-    qDebug() << "text";
+    QString str("");
+    qDebug() << str;
 }
 

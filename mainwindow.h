@@ -22,6 +22,9 @@ public:
 
 
     void tabWidgetInit(void);
+    void itemDockWidgetInit();
+
+    QMap<QString, QString> getItemsList(const QString &filepath);
 
 protected slots:
     void slotActNew(void);

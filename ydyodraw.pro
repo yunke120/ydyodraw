@@ -11,17 +11,23 @@ DESTDIR = $$PWD/bin
 DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
+    itemlabel.cpp \
     main.cpp \
     mainwindow.cpp \
     mscene.cpp \
     mview.cpp
 
 HEADERS += \
+    itemlabel.h \
     mainwindow.h \
     mscene.h \
-    mview.h
+    mview.h \
+    reflect.h
 
 FORMS += \
     mainwindow.ui
+
+RESOURCES += \
+    Resource.qrc
 
 
