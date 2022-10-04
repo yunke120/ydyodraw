@@ -9,36 +9,21 @@ class ItemLabel : public QLabel
 {
     Q_OBJECT
 public:
-    ItemLabel(QWidget *parent = nullptr);
+    ItemLabel(QString _name, QString _pixmap, QWidget *parent = nullptr);
     ~ItemLabel();
 
     QString nameString() const;
 
 protected:
 
-    virtual void mouseMoveEvent(QMouseEvent *ev) override;
-    virtual void mousePressEvent(QMouseEvent *ev) override;
-    virtual void mouseReleaseEvent(QMouseEvent *ev) override;
-    virtual void enterEvent(QEvent *ev) override;
-    virtual void leaveEvent(QEvent *ev) override;
+    void mouseMoveEvent(QMouseEvent *ev) override;
+    void mousePressEvent(QMouseEvent *ev) override;
+    void mouseReleaseEvent(QMouseEvent *ev) override;
+    void enterEvent(QEvent *ev) override;
+    void leaveEvent(QEvent *ev) override;
 
     QString name = "base";
+    QString mpixmap = nullptr;
 };
-
-
-class ItemRectLabel : public ItemLabel
-{
-    Q_OBJECT
-public:
-    ItemRectLabel(QWidget *parent = nullptr);
-};
-
-class ItemEllipseLabel : public ItemLabel
-{
-    Q_OBJECT
-public:
-    ItemEllipseLabel(QWidget *parent = nullptr);
-};
-
 
 #endif // ITEMLABEL_H

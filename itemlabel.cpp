@@ -5,15 +5,16 @@
 #include <QDrag>
 #include <QMimeData>
 #include <QDebug>
-ItemLabel::ItemLabel(QWidget *parent)
+ItemLabel::ItemLabel(QString _name, QString _pixmap, QWidget *parent)
     : QLabel(parent)
+    , name(_name)
+    , mpixmap(_pixmap)
 {
-    this->setMaximumWidth(30);
-    this->setMinimumWidth(30);
 
-    this->setMaximumHeight(30);
-    this->setMinimumHeight(30);
+    this->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Expanding);
 
+    QImage image(mpixmap);
+    this->setPixmap(QPixmap::fromImage(image));
 }
 
 ItemLabel::~ItemLabel()
@@ -28,11 +29,13 @@ QString ItemLabel::nameString() const
 
 void ItemLabel::mouseMoveEvent(QMouseEvent *event)
 {
+    Q_UNUSED(event);
     setCursor(Qt::ArrowCursor);
 }
 
 void ItemLabel::mousePressEvent(QMouseEvent *ev)
 {
+    Q_UNUSED(ev);
     setCursor(Qt::OpenHandCursor);
     QMimeData *mime = new QMimeData();
 //    this->metaObject()->className();
@@ -63,35 +66,3 @@ void ItemLabel::leaveEvent(QEvent *ev)
     setCursor(Qt::ArrowCursor);
 }
 
-/* Rect */
-ItemRectLabel::ItemRectLabel(QWidget *parent)
-    : ItemLabel(parent)
-{
-    name = "Rect";
-    QImage image(":/Resource/images/Rect.png");
-    this->setPixmap(QPixmap::fromImage(image.scaled(30,30)));
-}
-
-/* Ellipse */
-ItemEllipseLabel::ItemEllipseLabel(QWidget *parent)
-    : ItemLabel(parent)
-{
-    name = "Ellipse";
-    QImage image(":/Resource/images/Ellipse.png");
-    this->setPixmap(QPixmap::fromImage(image.scaled(30,30)));
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// https://www.cnblogs.com/liushui-sky/p/6559973.html

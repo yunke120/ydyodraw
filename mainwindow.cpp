@@ -16,9 +16,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    Reflect::registerClass<ItemRectLabel>();
-    Reflect::registerClass<ItemEllipseLabel>();
-
     tabWidgetInit();
     itemDockWidgetInit();
 
@@ -38,7 +35,6 @@ void MainWindow::tabWidgetInit()
     connect(ui->tabWidget, &QTabWidget::currentChanged, this, [=](int index)
     {
         Q_UNUSED(index);
-//        curView = dynamic_cast<CircuitBaseView *>(ui->tabWidget->currentWidget());
     });
 
     connect(ui->tabWidget, &QTabWidget::tabCloseRequested, this, [=](int index){
@@ -54,7 +50,6 @@ void MainWindow::tabWidgetInit()
 
         if(msgBox.clickedButton() == save)
         {
-//            slotActSave();
             ui->tabWidget->removeTab(index);
         }
         else if (msgBox.clickedButton() == unsave) {
@@ -63,36 +58,56 @@ void MainWindow::tabWidgetInit()
     });
 }
 
+/*
+ * 初始化图元的选项栏
+ */
 void MainWindow::itemDockWidgetInit()
 {
     QVBoxLayout *vlayout = new QVBoxLayout(ui->dockWidgetContents);
     ui->dockWidgetContents->setLayout(vlayout);
 
-/* 反射 */
-    QString rectStr = "ItemRectLabel";
-    ItemLabel *rectItem = (ItemLabel*)Reflect::newInstance(rectStr.toUtf8());
-    vlayout->addWidget(rectItem);
+    QStringList itemList = getItemsList("./items.txt");
 
-    ItemLabel *ellipseItem = new ItemEllipseLabel(ui->dockWidgetContents);
-    vlayout->addWidget(ellipseItem);
+    int size = itemList.size();
+    for (int i = 0; i < size; i++) {
+        QString name = itemList.at(i);
+        ItemLabel *itemLabel = new ItemLabel(name, getItemPixmap(name), ui->dockWidgetContents);
+        vlayout->addWidget(itemLabel);
+    }
 }
 
-QMap<QString, QString> MainWindow::getItemsList(const QString &filepath)
+/*
+    从配置文件items.txt中读出所有的图元列表
+*/
+QStringList MainWindow::getItemsList(const QString &filepath) const
 {
     QFile file(filepath);
     file.open(QIODevice::ReadOnly);
     QTextStream stream(&file);
 
-    QMap<QString, QString> map;
+    QStringList list;
+
     while (!stream.atEnd()) {
-        QString item, pixmap;
+        QString item;
         stream >> item;
-        stream >> pixmap;
-        map.insert(item, pixmap);
+        list << item;
     }
-    return map;
+    return list;
 }
 
+/*
+ * 通过图元的名字获取其图片的路径
+*/
+QString MainWindow::getItemPixmap(const QString &name) const
+{
+    static QString pixmap_path = "./images/";
+    static QString pixmap_suffix = ".png";
+    return pixmap_path+name+pixmap_suffix;
+}
+
+/*
+ * 创建新页面
+*/
 void MainWindow::slotActNew()
 {
     static int count = 0;
