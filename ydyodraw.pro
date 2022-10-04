@@ -8,10 +8,13 @@ TARGET = ydyodraw
 TEMPLATE = app
 DESTDIR = $$PWD/bin
 
+INCLUDEPATH += $$PWD/items
+
 DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     itemlabel.cpp \
+    items/mitem.cpp \
     main.cpp \
     mainwindow.cpp \
     mscene.cpp \
@@ -19,6 +22,7 @@ SOURCES += \
 
 HEADERS += \
     itemlabel.h \
+    items/mitem.h \
     mainwindow.h \
     mscene.h \
     mview.h \

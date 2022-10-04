@@ -3,6 +3,9 @@
 #include <QGraphicsSceneDragDropEvent>
 #include <QMimeData>
 #include <QDebug>
+
+#include "mitem.h"
+#include "reflect.h"
 MScene::MScene(QObject *parent)
     : QGraphicsScene(parent)
 {
@@ -12,6 +15,12 @@ MScene::MScene(QObject *parent)
 MScene::~MScene()
 {
 
+}
+
+QByteArray MScene::getItemClassName(QByteArray &name) const
+{
+    const char *c = "MItem";
+    return QByteArray(c) + name;
 }
 
 void MScene::dragEnterEvent(QGraphicsSceneDragDropEvent *event)
@@ -29,6 +38,23 @@ void MScene::dragMoveEvent(QGraphicsSceneDragDropEvent *event)
 void MScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 {
     QByteArray data = event->mimeData()->data("items");
-    qDebug() << QString(data);
-//    QGraphicsItem *item = new
+    QByteArray classname = getItemClassName(data);
+
+    MItem *item = (MItem*)Reflect::createObject(classname);
+    if(item)
+    {
+        qDebug() << QString("Add a %1 item.").arg(item->nameString());
+        item->setPos(event->scenePos());
+        this->addItem(item);
+    }
+    else
+        qDebug() << "No item.";
+
+
+}
+
+void MScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
+{
+    releasePoint = mouseEvent->pos();
+    qDebug() << releasePoint;
 }

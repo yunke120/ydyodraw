@@ -6,15 +6,23 @@
 #include <QVBoxLayout>
 #include <QMetaObject>
 #include <QDebug>
+#include <QFile>
 
 #include "itemlabel.h"
 #include "reflect.h"
+#include "mitem.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    Reflect::registerClass<MItemRect>();
+    Reflect::registerClass<MItemEllipse>();
+//    Reflect::registerClass<ItemLabel>();
+
+//    MItem::metaObject().className();
 
     tabWidgetInit();
     itemDockWidgetInit();

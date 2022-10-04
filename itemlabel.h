@@ -2,7 +2,6 @@
 #define ITEMLABEL_H
 
 #include <QLabel>
-#include <QMetaObject>
 #include <QObject>
 #include <QDrag>
 class ItemLabel : public QLabel

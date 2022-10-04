@@ -1,9 +1,10 @@
 #ifndef REFLECT_H
 #define REFLECT_H
 
-#include <QtCore>
-#include <QObject>
-
+#include <QByteArray>
+#include <QMetaObject>
+#include <QHash>
+#include <QGraphicsObject>
 class Reflect
 {
 public:
@@ -13,19 +14,19 @@ public:
         constructors().insert( T::staticMetaObject.className(), &constructorHelper<T> );
     }
 
-    static QObject* newInstance( const QByteArray& className, QWidget* parent = nullptr )
+    static QGraphicsObject* createObject( const QByteArray& className, QGraphicsObject* parent = NULL )
     {
         Constructor constructor = constructors().value( className );
-        if ( constructor == nullptr )
-            return nullptr;
+        if ( constructor == NULL )
+            return NULL;
         return (*constructor)( parent );
     }
 
 private:
-    typedef QObject* (*Constructor)( QWidget* parent );
+    typedef QGraphicsObject* (*Constructor)( QGraphicsObject* parent );
 
     template<typename T>
-    static QObject* constructorHelper( QWidget* parent )
+    static QGraphicsObject* constructorHelper( QGraphicsObject* parent )
     {
         return new T( parent );
     }
@@ -36,5 +37,6 @@ private:
         return instance;
     }
 };
+
 
 #endif // REFLECT_H

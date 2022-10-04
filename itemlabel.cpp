@@ -4,7 +4,7 @@
 #include <QCursor>
 #include <QDrag>
 #include <QMimeData>
-#include <QDebug>
+
 ItemLabel::ItemLabel(QString _name, QString _pixmap, QWidget *parent)
     : QLabel(parent)
     , name(_name)
