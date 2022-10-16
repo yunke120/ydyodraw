@@ -90,6 +90,7 @@ void MItemText::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     painter->setFont(m_font);
     painter->drawText(this->boundingRect(), m_text);
 }
+
 #include <QInputDialog>
 void MItemText::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {

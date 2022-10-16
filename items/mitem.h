@@ -1,4 +1,4 @@
-#ifndef MITEM_H
+﻿#ifndef MITEM_H
 #define MITEM_H
 
 #include <QGraphicsItem>
@@ -25,7 +25,6 @@ class MItemRect : public MItem
     Q_OBJECT
 public:
     MItemRect(QGraphicsObject *parent = nullptr);
-    ~MItemRect();
 
     QRectF boundingRect() const override;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
@@ -37,10 +36,27 @@ class MItemEllipse : public MItem
     Q_OBJECT
 public:
     MItemEllipse(QGraphicsObject *parent = nullptr);
-    ~MItemEllipse();
 
     QRectF boundingRect() const override;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
+};
+
+#include <QFont>
+class MItemText : public MItem
+{
+    Q_OBJECT
+public:
+    MItemText(QGraphicsObject *parent = nullptr);
+
+    QRectF boundingRect() const override;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
+
+private:
+    QFont m_font;
+    QString m_text;
+
+protected:
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 };
 
 #endif // MITEM_H

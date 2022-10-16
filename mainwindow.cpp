@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
 
 #include <QMessageBox>
@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     Reflect::registerClass<MItemRect>();
     Reflect::registerClass<MItemEllipse>();
+    Reflect::registerClass<MItemText>();
 //    Reflect::registerClass<ItemLabel>();
 
 //    MItem::metaObject().className();

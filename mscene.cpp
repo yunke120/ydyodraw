@@ -1,4 +1,4 @@
-#include "mscene.h"
+﻿#include "mscene.h"
 
 #include <QGraphicsSceneDragDropEvent>
 #include <QMimeData>
@@ -40,6 +40,7 @@ void MScene::dropEvent(QGraphicsSceneDragDropEvent *event)
     QByteArray data = event->mimeData()->data("items");
     QByteArray classname = getItemClassName(data);
 
+    qDebug() << classname;
     MItem *item = (MItem*)Reflect::createObject(classname);
     if(item)
     {
