@@ -53,9 +53,3 @@ void MScene::dropEvent(QGraphicsSceneDragDropEvent *event)
 
 
 }
-
-void MScene::mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent)
-{
-    releasePoint = mouseEvent->pos();
-    qDebug() << releasePoint;
-}

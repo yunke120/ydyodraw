@@ -16,6 +16,11 @@ public:
     virtual void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) = 0;
 
 protected:
+    virtual void drawSelectedRect(QPainter *painter); /* 画虚线框 */
+    virtual void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
+    virtual void hoverLeaveEvent(QGraphicsSceneHoverEvent *event);
+
+protected:
     QString name = "base";
 };
 

@@ -1,4 +1,4 @@
-#ifndef MSCENE_H
+﻿#ifndef MSCENE_H
 #define MSCENE_H
 
 #include <QGraphicsScene>
@@ -10,15 +10,12 @@ public:
     ~MScene();
 
 private:
-    QPointF releasePoint;
     QByteArray getItemClassName(QByteArray &name) const;
 
 protected:
     void dragEnterEvent(QGraphicsSceneDragDropEvent *event);
     void dragMoveEvent(QGraphicsSceneDragDropEvent *event);
     void dropEvent(QGraphicsSceneDragDropEvent *event);
-
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *mouseEvent);
 
 };
 

@@ -1,10 +1,19 @@
 ﻿#include "mitem.h"
 
+#define Item_Width       40
+#define Item_Height      40
+#define Item_Width_Div2  20
+#define Item_Height_Div2 20
+
 #include <QPainter>
 MItem::MItem(QGraphicsItem *parent)
     : QGraphicsObject(parent)
 {
-
+    this->setAcceptedMouseButtons(Qt::LeftButton /*| Qt::RightButton*/);
+    //this->setAcceptHoverEvents(true);
+    this->setFlags(  QGraphicsItem::ItemIsMovable
+                   | QGraphicsItem::ItemIsSelectable
+                   /*| QGraphicsItem::ItemIsFocusable*/);
 }
 
 MItem::~MItem()
@@ -15,6 +24,26 @@ MItem::~MItem()
 QString MItem::nameString() const
 {
     return name;
+}
+
+void MItem::drawSelectedRect(QPainter *painter)
+{
+    QRectF rect = this->boundingRect();
+
+    painter->setPen(QPen(QColor(8,255,200), 0, Qt::DashLine));
+    painter->setBrush(Qt::NoBrush);
+
+    painter->drawRect(rect.adjusted(-1, -1, 1, 1));
+}
+
+void MItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
+{
+
+}
+
+void MItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
+{
+
 }
 
 /**********
@@ -29,7 +58,7 @@ MItemRect::MItemRect(QGraphicsObject *parent)
 
 QRectF MItemRect::boundingRect() const
 {
-    return QRectF(-10,-10,20,20);
+    return QRectF(-Item_Width_Div2,-Item_Height_Div2,Item_Width,Item_Height);
 }
 
 void MItemRect::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -38,6 +67,9 @@ void MItemRect::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     painter->setRenderHint(QPainter::Antialiasing, true);
     painter->setPen(Qt::black);
     painter->drawRect(this->boundingRect());
+
+    if(this->isSelected())
+        this->drawSelectedRect(painter);
 }
 
 /**********
@@ -52,7 +84,7 @@ MItemEllipse::MItemEllipse(QGraphicsObject *parent)
 
 QRectF MItemEllipse::boundingRect() const
 {
-    return QRectF(-10,-10,20,20);
+    return QRectF(-Item_Width_Div2,-Item_Height_Div2,Item_Width,Item_Height);
 }
 
 void MItemEllipse::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -61,6 +93,9 @@ void MItemEllipse::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
     painter->setRenderHint(QPainter::Antialiasing, true);
     painter->setPen(Qt::black);
     painter->drawEllipse(this->boundingRect());
+
+    if(this->isSelected())
+        this->drawSelectedRect(painter);
 }
 
 
@@ -72,7 +107,7 @@ MItemText::MItemText(QGraphicsObject *parent)
 {
     name = "Text";
     m_text = name;
-    m_font.setPixelSize(8);
+    m_font.setPixelSize(Item_Width_Div2);
 }
 
 QRectF MItemText::boundingRect() const
@@ -89,7 +124,11 @@ void MItemText::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
     painter->setRenderHint(QPainter::TextAntialiasing, true);
     painter->setFont(m_font);
     painter->drawText(this->boundingRect(), m_text);
+
+    if(this->isSelected())
+        this->drawSelectedRect(painter);
 }
+
 #include <QInputDialog>
 void MItemText::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
